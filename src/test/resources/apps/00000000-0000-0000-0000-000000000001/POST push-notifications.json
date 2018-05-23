@@ -1,0 +1,11 @@
+// HTTP/1.1 422 Unprocessable Entity
+{
+  "code": "unknown_device",
+  "message": "device with specified id not found",
+  "violations": [
+    {
+      "reason": "device not found: unknown-device-id",
+      "subject": "device_id"
+    }
+  ]
+}

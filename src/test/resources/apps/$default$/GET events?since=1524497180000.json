@@ -1,0 +1,3 @@
+{"id":"94385575-ea32-43b3-bfcd-75f7d9f7635d","type":"system","action":"initialized"}
+{"id":"8ec37463-3b36-46ad-821a-b0c3d5d66dbd","timestamp":1524571725210,"type":"document","action":"created","payload":{"type":"OPEN_SESSION","id":"8ec37463-3b36-46ad-821a-b0c3d5d66dbd","number":1,"close_date":"2018-04-24T12:08:44.886+0000","time_zone_offset":10800000,"session_id":"90ab47c7-8624-4108-ab75-576ea4db9f03","session_number":1,"close_user_id":"02-200000000000000","device_id":"20170220-707B-4057-8051-099986EF0000","store_id":"20161209-3002-4054-80FD-F41228040000","version":"V2"}}
+{"id":"c0b3c6e9-02e7-400f-b35b-1141923991c9","type":"system","action":"ping"}

@@ -1,0 +1,10 @@
+{
+  "devices": [
+    "device-id-1",
+    "device-id-2"
+  ],
+  "payload": {
+    "id": 12345,
+    "data": "foobar"
+  }
+}

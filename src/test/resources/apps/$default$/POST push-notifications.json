@@ -1,0 +1,19 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "status": "ACCEPTED",
+  "modified_at": 0,
+  "details": [
+    {
+      "device_id": "device-id-1",
+      "status": "ACCEPTED"
+    },
+    {
+      "device_id": "device-id-2",
+      "status": "ACCEPTED"
+    },
+    {
+      "device_id": "device-id-3",
+      "status": "ACCEPTED"
+    }
+  ]
+}
