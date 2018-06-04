@@ -5,6 +5,7 @@ import io.evotor.market.publisher.api.v1.ApiProvider;
 import io.evotor.market.publisher.api.v1.EventsApi;
 import io.evotor.market.publisher.api.v1.builder.Api;
 import io.evotor.market.publisher.api.v1.builder.Events;
+import io.evotor.market.publisher.api.v1.builder.Installations;
 import io.evotor.market.publisher.api.v1.builder.PushNotifications;
 
 import java.util.Map;
@@ -37,6 +38,11 @@ public class ApiImpl implements Api {
             @Override
             public PushNotifications pushNotifications() {
                 return new PushNotificationsImpl(appId, apiProvider);
+            }
+
+            @Override
+            public Installations installations() {
+                return new InstallationsImpl(appId, apiProvider);
             }
         };
     }

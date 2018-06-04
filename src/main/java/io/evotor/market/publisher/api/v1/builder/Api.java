@@ -12,5 +12,7 @@ public interface Api {
 
         PushNotifications pushNotifications();
 
+        Installations installations();
+
     }
 }
