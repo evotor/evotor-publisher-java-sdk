@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "app_id": "00000000-0000-0000-0000-000000000000",
+      "version_id": "00000000-0000-0000-0000-000000000000",
+      "publisher_id": "00000000-0000-0000-0000-000000000000",
+      "name": "name",
+      "short_name": "short name",
+      "status": "PUBLISHED",
+      "description": "description",
+      "created_at": 10800000,
+      "updated_at": 10800000
+    }
+  ],
+  "paging": { }
+}

@@ -1,18 +1,18 @@
 package io.evotor.market.publisher.api.v1.impl;
 
+import io.evotor.market.publisher.api.v1.ApiProvider;
 import io.evotor.market.publisher.api.v1.EventsApi;
 import io.evotor.market.publisher.api.v1.builder.Events;
 import io.evotor.market.publisher.api.v1.model.Page;
 import io.evotor.market.publisher.api.v1.model.event.ApplicationEvent;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-class EventsImpl implements Events, Events.EventUntilBuilder, Events.EventTypesBuilder, Events.EventBuilderFinalStage {
+class EventsImpl extends Impl<ApplicationEvent> implements Events, Events.EventSinceBuilder, Events.EventUntilBuilder, Events.EventTypesBuilder, Events.EventBuilderFinalStage {
 
     private final UUID appId;
     private final EventsApi eventsApi;
@@ -21,8 +21,9 @@ class EventsImpl implements Events, Events.EventUntilBuilder, Events.EventTypesB
     private Long until;
     private Set<String> types;
 
-    EventsImpl(UUID appId, EventsApi eventsApi) {
-        this.eventsApi = eventsApi;
+    EventsImpl(UUID appId, ApiProvider apiProvider) {
+        super(apiProvider);
+        this.eventsApi = get(EventsApi.class);
         this.appId = appId;
     }
 
@@ -49,8 +50,10 @@ class EventsImpl implements Events, Events.EventUntilBuilder, Events.EventTypesB
     }
 
     @Override
-    public Page<ApplicationEvent> fetch() {
-        return eventsApi.fetchEvents(appId, since, until, types);
+    protected Function<String, Page<ApplicationEvent>> nextPageProvider() {
+        return cursor -> cursor != null ?
+                eventsApi.fetchEvents(appId, cursor) :
+                eventsApi.fetchEvents(appId, since, until, types);
     }
 
     @Override
@@ -59,11 +62,7 @@ class EventsImpl implements Events, Events.EventUntilBuilder, Events.EventTypesB
     }
 
     @Override
-    public Iterator<ApplicationEvent> iterator() {
-        Function<String, Page<ApplicationEvent>> provider = (nextCursor) -> nextCursor != null ?
-                eventsApi.fetchEvents(appId, nextCursor) :
-                eventsApi.fetchEvents(appId, since, until, types);
-
-        return new PageableIterator<>(provider);
+    public EventSinceBuilder filter() {
+        return this;
     }
 }
