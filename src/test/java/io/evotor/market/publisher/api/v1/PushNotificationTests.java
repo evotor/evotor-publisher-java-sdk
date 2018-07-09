@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 public class PushNotificationTests {
 
-    private final PushNotifications notifications = api.select(DEFAULT)
+    private final PushNotifications notifications = api.apps().select(DEFAULT)
             .pushNotifications();
 
     @Test
@@ -67,7 +67,7 @@ public class PushNotificationTests {
     @Test
     public void bad_request_should_be_processed() {
         try {
-            api.select(UUID.fromString("00000000-0000-0000-0000-000000000001"))
+            api.apps().select(UUID.fromString("00000000-0000-0000-0000-000000000001"))
                     .pushNotifications()
                     .create(PushRequest.builder()
                             .device("unknown-device-id")

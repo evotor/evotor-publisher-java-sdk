@@ -18,7 +18,8 @@ public class EventsTest {
 
     @Test
     public void events_should_be_fetched() {
-        Page<ApplicationEvent> page = api.select(DEFAULT).events()
+        Page<ApplicationEvent> page = api.apps().select(DEFAULT).events()
+                .filter()
                 .since(1524497180000L)
                 .until(1524583580000L)
                 .fetch();
@@ -30,7 +31,8 @@ public class EventsTest {
 
     @Test
     public void events_should_be_streamed() {
-        Stream<ApplicationEvent> stream = api.select(DEFAULT).events()
+        Stream<ApplicationEvent> stream = api.apps().select(DEFAULT).events()
+                .filter()
                 .since(1524497180000L)
                 .stream();
 

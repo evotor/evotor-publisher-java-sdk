@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
-class PushNotificationsImpl extends Impl implements PushNotifications {
+class PushNotificationsImpl extends Impl<PushScheduledTask> implements PushNotifications {
 
     private final UUID appId;
 

@@ -1,6 +1,5 @@
 package io.evotor.market.publisher.api.v1.builder;
 
-import io.evotor.market.publisher.api.v1.model.Page;
 import io.evotor.market.publisher.api.v1.model.event.ApplicationEvent;
 
 import java.time.LocalDateTime;
@@ -10,29 +9,33 @@ import java.util.stream.Stream;
 
 public interface Events {
 
-    EventUntilBuilder since(long since);
+    EventSinceBuilder filter();
 
-    default EventUntilBuilder all() {
-        return since(0);
-    }
+    interface EventSinceBuilder extends EventUntilBuilder {
+        EventUntilBuilder since(long since);
 
-    default EventTypesBuilder yesterday() {
-        return last(1, ChronoUnit.DAYS);
-    }
+        default EventUntilBuilder all() {
+            return since(0);
+        }
 
-    default EventTypesBuilder lastWeek() {
-        return last(1, ChronoUnit.WEEKS);
-    }
+        default EventTypesBuilder yesterday() {
+            return last(1, ChronoUnit.DAYS);
+        }
 
-    default EventTypesBuilder last(int amount, ChronoUnit unit) {
-        long now = LocalDateTime.now()
-                .toEpochSecond(ZoneOffset.UTC) * 1000;
+        default EventTypesBuilder lastWeek() {
+            return last(1, ChronoUnit.WEEKS);
+        }
 
-        long lastDay = LocalDateTime.now()
-                .minus(unit.getDuration().multipliedBy(amount))
-                .toEpochSecond(ZoneOffset.UTC) * 1000;
+        default EventTypesBuilder last(int amount, ChronoUnit unit) {
+            long now = LocalDateTime.now()
+                    .toEpochSecond(ZoneOffset.UTC) * 1000;
 
-        return since(lastDay).until(now);
+            long since = LocalDateTime.now()
+                    .minus(unit.getDuration().multipliedBy(amount))
+                    .toEpochSecond(ZoneOffset.UTC) * 1000;
+
+            return since(since).until(now);
+        }
     }
 
     interface EventUntilBuilder extends EventTypesBuilder {
@@ -43,8 +46,7 @@ public interface Events {
         EventTypesBuilder type(String eventType);
     }
 
-    interface EventBuilderFinalStage extends Iterable<ApplicationEvent> {
-        Page<ApplicationEvent> fetch();
+    interface EventBuilderFinalStage extends NavigableResource<ApplicationEvent> {
         Stream<ApplicationEvent> stream();
     }
 }
