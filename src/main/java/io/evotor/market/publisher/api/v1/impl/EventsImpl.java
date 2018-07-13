@@ -1,11 +1,18 @@
 package io.evotor.market.publisher.api.v1.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import feign.Response;
+import feign.Util;
+import feign.codec.DecodeException;
 import io.evotor.market.publisher.api.v1.ApiProvider;
+import io.evotor.market.publisher.api.v1.ApiV1;
 import io.evotor.market.publisher.api.v1.EventsApi;
+import io.evotor.market.publisher.api.v1.StreamDecoder;
 import io.evotor.market.publisher.api.v1.builder.Events;
 import io.evotor.market.publisher.api.v1.model.Page;
 import io.evotor.market.publisher.api.v1.model.event.ApplicationEvent;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -16,6 +23,7 @@ class EventsImpl extends Impl<ApplicationEvent> implements Events, Events.EventS
 
     private final UUID appId;
     private final EventsApi eventsApi;
+    private final StreamDecoder streamDecoder;
 
     private Long since = 0L;
     private Long until;
@@ -25,6 +33,7 @@ class EventsImpl extends Impl<ApplicationEvent> implements Events, Events.EventS
         super(apiProvider);
         this.eventsApi = get(EventsApi.class);
         this.appId = appId;
+        this.streamDecoder = new StreamDecoder(ApiV1.buildObjectMapper());
     }
 
     @Override
@@ -57,8 +66,19 @@ class EventsImpl extends Impl<ApplicationEvent> implements Events, Events.EventS
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Stream<ApplicationEvent> stream() {
-        return eventsApi.fetchEventStream(appId, since, until, types);
+        Response response = eventsApi.fetchEventStream(appId, since, until, types);
+
+        try {
+            Stream<ApplicationEvent> decode = (Stream<ApplicationEvent>) streamDecoder.decode(response,
+                    new TypeReference<Stream<ApplicationEvent>>() {}.getType());
+
+            return decode.onClose(response::close);
+        } catch (IOException e) {
+            Util.ensureClosed(response);
+            throw new DecodeException(e.getMessage());
+        }
     }
 
     @Override

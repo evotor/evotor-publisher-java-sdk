@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import feign.Feign;
 import feign.Logger;
+import feign.Response;
+import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.okhttp.OkHttpClient;
 import feign.slf4j.Slf4jLogger;
@@ -14,6 +16,8 @@ import io.evotor.market.publisher.api.token.TokenProvider;
 import io.evotor.market.publisher.api.v1.builder.Api;
 import io.evotor.market.publisher.api.v1.impl.ApiImpl;
 import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE;
 
@@ -39,20 +43,31 @@ public class ApiV1 {
 
     public static Feign.Builder prepareBuilder(TokenProvider provider, ObjectMapper mapper) {
         return Feign.builder()
-                    .decoder(new StreamDecoder(mapper))
+                    .decoder(new JacksonDecoder(mapper))
                     .encoder(new JacksonEncoder(mapper))
-                    .logger(new Slf4jLogger())
+                    .logger(new Slf4jNoResponseLogger())
                     .logLevel(Logger.Level.FULL)
                     .client(new OkHttpClient())
                     .errorDecoder(new ExceptionResolver())
                     .requestInterceptor(template -> {
                         template.header("Authorization", "Bearer " + provider.get());
                         template.header("User-Agent", "X-Evotor-Publisher-Api-Demo");
-                        template.header("Accept", "application/vnd.evotor.v2+json");
+                        if (!template.headers().containsKey("Accept")) {
+                            template.header("Accept", "application/vnd.evotor.v2+json");
+                        }
+
                         if (template.body() != null && template.body().length > 0) {
                             template.header("Content-Type", "application/json");
                         }
                     });
+    }
+
+    // disable logging for streaming support
+    public static class Slf4jNoResponseLogger extends Slf4jLogger {
+        @Override
+        protected Response logAndRebufferResponse(String configKey, Level logLevel, Response response, long elapsedTime) throws IOException {
+            return response;
+        }
     }
 
     public static ObjectMapper buildObjectMapper() {

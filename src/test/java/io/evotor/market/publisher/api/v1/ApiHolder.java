@@ -32,10 +32,7 @@ public class ApiHolder {
         Feign.Builder builder = ApiV1.prepareBuilder(() -> "any")
                 .encoder(new ValidationEncoderDecorator(new JacksonEncoder(buildObjectMapper())))
                 .client(getClient())
-                .requestInterceptor(template -> {
-                    template.header("User-Agent", "Publisher-Api-Tests");
-                    template.header("Accept", "application/vnd.evotor.v2+json");
-                });
+                .requestInterceptor(template -> template.header("User-Agent", "Publisher-Api-Tests"));
 
         api = new ApiV1("dummy", builder).build();
     }

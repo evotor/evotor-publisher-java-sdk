@@ -20,6 +20,7 @@ public class ApplicationEvent {
     private String action;
 
     @JsonTypeInfo(
+            defaultImpl = UnknownType.class,
             use = JsonTypeInfo.Id.NAME,
             include = JsonTypeInfo.As.EXTERNAL_PROPERTY,
             property = "type")
