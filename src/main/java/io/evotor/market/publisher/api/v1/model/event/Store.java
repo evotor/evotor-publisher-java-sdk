@@ -2,11 +2,13 @@ package io.evotor.market.publisher.api.v1.model.event;
 
 import io.evotor.market.publisher.api.v1.model.GUID;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Optional;
 
 @Data
-public class Store implements EventPayload {
+@EqualsAndHashCode(callSuper = true)
+public class Store extends AbstractPayload {
 
     private GUID id;
     private String userId;
