@@ -1,6 +1,7 @@
 package io.evotor.market.publisher.api.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ public class GUID {
         this.value = value;
     }
 
+    @JsonValue
     public UUID asUUID() {
         return value;
     }
