@@ -12,7 +12,10 @@ public enum EventType {
     document,
     product,
 
-    @JsonProperty("product.image")
+    @JsonProperty("product-group")
+    product_group,
+
+    @JsonProperty("product-image")
     product_image,
 
     // publisher
