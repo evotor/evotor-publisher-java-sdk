@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-abstract class AbstractPayload implements EventPayload {
+public abstract class AbstractPayload implements EventPayload {
 
     private Date createdAt;
     private Date updatedAt;
