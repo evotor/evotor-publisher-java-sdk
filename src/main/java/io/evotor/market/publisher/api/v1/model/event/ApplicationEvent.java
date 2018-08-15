@@ -25,13 +25,13 @@ public class ApplicationEvent {
             include = JsonTypeInfo.As.EXTERNAL_PROPERTY,
             property = "type")
     @JsonSubTypes({
-            @JsonSubTypes.Type(value = Document.class, name = "document"),
-            @JsonSubTypes.Type(value = EventPayload.class, name = "system"),
-            @JsonSubTypes.Type(value = Store.class, name = "store"),
-            @JsonSubTypes.Type(value = Device.class, name = "device"),
-            @JsonSubTypes.Type(value = Employee.class, name = "employee"),
-            @JsonSubTypes.Type(value = Product.class, name = "product"),
-            @JsonSubTypes.Type(value = ProductImage.class, name = "product-image")
+            @JsonSubTypes.Type(value = Document.class, name = "DocumentEvent"),
+            @JsonSubTypes.Type(value = EventPayload.class, name = "SystemEvent"),
+            @JsonSubTypes.Type(value = Store.class, name = "StoreEvent"),
+            @JsonSubTypes.Type(value = Device.class, name = "DeviceEvent"),
+            @JsonSubTypes.Type(value = Employee.class, name = "EmployeeEvent"),
+            @JsonSubTypes.Type(value = Product.class, name = "ProductEvent"),
+            @JsonSubTypes.Type(value = ProductImage.class, name = "ProductImageEvent")
     })
     private EventPayload payload;
 
