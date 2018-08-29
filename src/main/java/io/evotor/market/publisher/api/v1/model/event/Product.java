@@ -33,7 +33,7 @@ public class Product extends AbstractPayload {
         VAT_18_118
     }
 
-    private String id;
+    private UUID id;
     private String parentId;
     private ProductType type;
     private String name;

@@ -31,6 +31,7 @@ public class ApplicationEvent {
             @JsonSubTypes.Type(value = Device.class, name = "DeviceEvent"),
             @JsonSubTypes.Type(value = Employee.class, name = "EmployeeEvent"),
             @JsonSubTypes.Type(value = Product.class, name = "ProductEvent"),
+            @JsonSubTypes.Type(value = ProductGroup.class, name = "ProductGroupEvent"),
             @JsonSubTypes.Type(value = ProductImage.class, name = "ProductImageEvent")
     })
     private EventPayload payload;
