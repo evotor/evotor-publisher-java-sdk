@@ -43,10 +43,10 @@ public class ApiHolder {
             String path = StringUtils.substringAfter(request.url(), "dummy");
 
             int index = path.lastIndexOf("/");
-            String prefix = (path.substring(0, index) + "/" + request.method() + " " + path.substring(index + 1))
-                    .replace(DEFAULT.toString(),"$default$");
+            String prefix = (path.substring(0, index) + "/" + request.method() + " " + path.substring(index + 1));
+            String updated = StringUtils.removeAll(prefix, "00000000-0000-0000-0000-00000000000");
 
-            InputStream inputStream = ApiHolder.class.getResourceAsStream(prefix + ".in.json");
+            InputStream inputStream = ApiHolder.class.getResourceAsStream(updated + ".in.json");
             if (inputStream != null) {
                 JsonNode expected = mapper.readTree(inputStream);
                 JsonNode actual = mapper.readTree(request.body());
@@ -54,7 +54,7 @@ public class ApiHolder {
                 Assert.assertThat(expected, JsonMatchers.jsonEquals(actual));
             }
 
-            InputStream outputStream = ApiHolder.class.getResourceAsStream(prefix + ".json");
+            InputStream outputStream = ApiHolder.class.getResourceAsStream(updated + ".json");
             if (outputStream == null) {
                 return Response.builder()
                         .status(404)
