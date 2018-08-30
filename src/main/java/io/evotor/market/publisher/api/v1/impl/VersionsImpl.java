@@ -16,6 +16,12 @@ class VersionsImpl extends Impl<Object> implements Versions {
 
     @Override
     public VersionInstance select(UUID versionId) {
-        return new VersionInstance() {};
+        return new VersionInstance() {
+
+            @Override
+            public Hooks hooks() {
+                return new HooksImpl(appId, versionId, apiProvider);
+            }
+        };
     }
 }

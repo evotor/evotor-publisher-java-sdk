@@ -1,0 +1,12 @@
+{
+  "events": [
+    "document",
+    "store",
+    "device"
+  ],
+  "config": {
+    "content_type": "V2",
+    "insecure_ssl": false
+  },
+  "active": true
+}
